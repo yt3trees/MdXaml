@@ -85,6 +85,14 @@ namespace MdXaml
                 typeof(MarkdownScrollViewer),
                 new PropertyMetadata(false, UpdateUseSoftlineBreakAsHardlineBreak));
 
+        public static readonly DependencyProperty UseDarkThemeSyntaxHighlightingProperty =
+            DependencyProperty.Register(
+                nameof(UseDarkThemeSyntaxHighlighting),
+                typeof(bool),
+                typeof(MarkdownScrollViewer),
+                new PropertyMetadata(false, UpdateUseDarkThemeSyntaxHighlighting));
+
+
         private static void UpdateSource(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is MarkdownScrollViewer owner && e.NewValue is Uri source)
@@ -187,6 +195,7 @@ namespace MdXaml
                 }
             }
         }
+
         private static void UpdateUseSoftlineBreakAsHardlineBreak(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if(d is MarkdownScrollViewer owner)
@@ -195,6 +204,18 @@ namespace MdXaml
                 if (useSoftlineBreakAsHardlineBreak != owner.Engine.UseSoftlineBreakAsHardlineBreak)
                 {
                   owner.Engine.UseSoftlineBreakAsHardlineBreak = (bool)e.NewValue;
+                }
+            }
+        }
+
+        private static void UpdateUseDarkThemeSyntaxHighlighting(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if(d is MarkdownScrollViewer owner)
+            {
+                var useDarkThemeSyntaxHighlighting = (bool)e.NewValue;
+                if (useDarkThemeSyntaxHighlighting != owner.Engine.UseDarkThemeSyntaxHighlighting)
+                {
+                  owner.Engine.UseDarkThemeSyntaxHighlighting = (bool)e.NewValue;
                 }
             }
         }
@@ -358,10 +379,17 @@ namespace MdXaml
             get { return (string)GetValue(FragmentProperty); }
             set { SetValue(FragmentProperty, value); }
         }
+
         public bool UseSoftlineBreakAsHardlineBreak
         {
           get { return (bool)GetValue(UseSoftlineBreakAsHardlineBreakProperty); }
           set { SetValue(UseSoftlineBreakAsHardlineBreakProperty, value); }
+        }
+
+        public bool UseDarkThemeSyntaxHighlighting
+        {
+          get { return (bool)GetValue(UseDarkThemeSyntaxHighlightingProperty); }
+          set { SetValue(UseDarkThemeSyntaxHighlightingProperty, value); }
         }
 
         private ClickAction _clickAction;

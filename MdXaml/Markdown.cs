@@ -79,6 +79,8 @@ namespace MdXaml
 
         public bool UseSoftlineBreakAsHardlineBreak { get; set; }
 
+        public bool UseDarkThemeSyntaxHighlighting { get; set; }
+
         public string? AssetPathRoot { get; set; }
 
         public ICommand? HyperlinkCommand { get; set; }
@@ -1496,15 +1498,163 @@ namespace MdXaml
             return CodeBlocksEvaluator(null, _newlinesLeadingTrailing.Replace(detentTxt, ""));
         }
 
-        private Block CodeBlocksEvaluator(string? lang, string code)
+        private Block CodeBlocksEvaluator(string? lang, string? code)
         {
             var txtEdit = new TextEditor();
-
             if (!String.IsNullOrEmpty(lang))
             {
                 var highlight = ParseParam.HighlightManager.Get(lang);
                 txtEdit.SetCurrentValue(TextEditor.SyntaxHighlightingProperty, highlight);
+                var highlighting = txtEdit.SyntaxHighlighting;
+
+                var fore = (Color)ColorConverter.ConvertFromString("#FFFFFF");
+                var red = (Color)ColorConverter.ConvertFromString("#F86E67");
+                var purple = (Color)ColorConverter.ConvertFromString("#A16BF9");
+                var blue = (Color)ColorConverter.ConvertFromString("#6BB7F9");
+                var blue2 = (Color)ColorConverter.ConvertFromString("#5292F8");
+                var gray = (Color)ColorConverter.ConvertFromString("#A3A3A3");
+                var green = (Color)ColorConverter.ConvertFromString("#7EE094");
+
+                if (!UseDarkThemeSyntaxHighlighting)
+                {
+                    fore = (Color)ColorConverter.ConvertFromString("#000000");
+                    red = (Color)ColorConverter.ConvertFromString("#D75448");
+                    purple = (Color)ColorConverter.ConvertFromString("#8747EA");
+                    blue = (Color)ColorConverter.ConvertFromString("#2A82D7");
+                    blue2 = (Color)ColorConverter.ConvertFromString("#1E60A8");
+                    gray = (Color)ColorConverter.ConvertFromString("#707070");
+                    green = (Color)ColorConverter.ConvertFromString("#388E3C");
+                }
+
+                if (highlighting != null)
+                {
+                    // powershell
+                    SetHighlightingColor(highlighting, "Variable", fore);
+                    SetHighlightingColor(highlighting, "Keywords", red);
+                    SetHighlightingColor(highlighting, "Command", blue2);
+                    SetHighlightingColor(highlighting, "String", blue);
+                    SetHighlightingColor(highlighting, "Char", blue);
+                    SetHighlightingColor(highlighting, "Character", blue);
+                    SetHighlightingColor(highlighting, "NumberLiteral", blue);
+                    SetHighlightingColor(highlighting, "StringInterpolation", blue);
+                    SetHighlightingColor(highlighting, "Operators", red);
+
+                    // csharp
+                    SetHighlightingColor(highlighting, "Comment", gray);
+                    SetHighlightingColor(highlighting, "MethodCall", purple);
+                    SetHighlightingColor(highlighting, "GetSetAddRemove", blue);
+                    SetHighlightingColor(highlighting, "Modifiers", red);
+                    SetHighlightingColor(highlighting, "ParameterModifiers", red);
+                    SetHighlightingColor(highlighting, "Visibility", red);
+                    SetHighlightingColor(highlighting, "Preprocessor", green);
+                    SetHighlightingColor(highlighting, "TrueFalse", blue);
+                    SetHighlightingColor(highlighting, "ValueTypeKeywords", red);
+                    SetHighlightingColor(highlighting, "TypeKeywords", red);
+                    SetHighlightingColor(highlighting, "SemanticKeywords", blue);
+                    SetHighlightingColor(highlighting, "NamespaceKeywords", red);
+                    SetHighlightingColor(highlighting, "ReferenceTypeKeywords", red);
+                    SetHighlightingColor(highlighting, "ThisOrBaseReference", blue);
+                    SetHighlightingColor(highlighting, "NullOrValueKeywords", blue);
+                    SetHighlightingColor(highlighting, "GotoKeywords", blue);
+                    SetHighlightingColor(highlighting, "ContextKeywords", blue);
+                    SetHighlightingColor(highlighting, "ExceptionKeywords", red);
+                    SetHighlightingColor(highlighting, "CheckedKeyword", blue);
+                    SetHighlightingColor(highlighting, "UnsafeKeywords", blue);
+                    SetHighlightingColor(highlighting, "OperatorKeywords", blue);
+                    SetHighlightingColor(highlighting, "Punctuation", fore);
+                    SetHighlightingColor(highlighting, "SemanticKeywords", blue);
+
+                    // cpp
+                    SetHighlightingColor(highlighting, "JumpKeywords", red);
+                    SetHighlightingColor(highlighting, "MethodName", purple);
+                    SetHighlightingColor(highlighting, "TypeKeywords", purple);
+                    SetHighlightingColor(highlighting, "Namespace", red);
+                    SetHighlightingColor(highlighting, "Friend", red);
+                    SetHighlightingColor(highlighting, "This", blue);
+                    SetHighlightingColor(highlighting, "BooleanConstants", blue);
+                    SetHighlightingColor(highlighting, "ControlFlow", red);
+                    SetHighlightingColor(highlighting, "LoopKeywords", red);
+                    SetHighlightingColor(highlighting, "ExceptionHandling", blue);
+
+                    // html
+                    SetHighlightingColor(highlighting, "HtmlTag", green);
+                    SetHighlightingColor(highlighting, "ScriptTag", green);
+                    SetHighlightingColor(highlighting, "JavaScriptTag", green);
+                    SetHighlightingColor(highlighting, "JScriptTag", green);
+                    SetHighlightingColor(highlighting, "VBScriptTag", green);
+                    SetHighlightingColor(highlighting, "UnknownScriptTag", green);
+                    SetHighlightingColor(highlighting, "Tags", green);
+                    SetHighlightingColor(highlighting, "Attributes", purple);
+                    SetHighlightingColor(highlighting, "UnknownAttribute", purple);
+                    SetHighlightingColor(highlighting, "Slash", green);
+                    SetHighlightingColor(highlighting, "Digits", blue);
+                    SetHighlightingColor(highlighting, "EntityReference", blue);
+                    SetHighlightingColor(highlighting, "Entities", blue);
+                    SetHighlightingColor(highlighting, "Assignment", blue);
+
+                    // js
+                    SetHighlightingColor(highlighting, "JavaScriptKeyWords", red);
+                    SetHighlightingColor(highlighting, "JavaScriptIntrinsics", red);
+                    SetHighlightingColor(highlighting, "JavaScriptLiterals", red);
+                    SetHighlightingColor(highlighting, "JavaScriptGlobalFunctions", red);
+
+                    // css
+                    SetHighlightingColor(highlighting, "Selector", green);
+                    SetHighlightingColor(highlighting, "Class", blue);
+                    SetHighlightingColor(highlighting, "Property", blue2);
+                    SetHighlightingColor(highlighting, "Value", blue);
+                    SetHighlightingColor(highlighting, "Colon", fore);
+                    SetHighlightingColor(highlighting, "CurlyBraces", fore);
+
+                    // php
+                    SetHighlightingColor(highlighting, "SelectionStatements", blue);
+                    SetHighlightingColor(highlighting, "JumpStatements", blue);
+                    SetHighlightingColor(highlighting, "IterationStatements", blue);
+                    SetHighlightingColor(highlighting, "ValueTypes", blue);
+                    SetHighlightingColor(highlighting, "ControlStatements", blue);
+                    SetHighlightingColor(highlighting, "Heading", blue);
+                    SetHighlightingColor(highlighting, "Link", blue);
+                    SetHighlightingColor(highlighting, "BlockQuote", green);
+                    SetHighlightingColor(highlighting, "OtherTypes", red);
+
+                    // java
+                    SetHighlightingColor(highlighting, "ReferenceTypes", red);
+                    SetHighlightingColor(highlighting, "Void", red);
+                    SetHighlightingColor(highlighting, "ExceptionHandlingStatements", red);
+                    SetHighlightingColor(highlighting, "AccessKeywords", blue);
+                    SetHighlightingColor(highlighting, "AccessModifiers", red);
+
+                    // json
+                    SetHighlightingColor(highlighting, "Bool", blue);
+                    SetHighlightingColor(highlighting, "Null", blue);
+                    SetHighlightingColor(highlighting, "Number", blue);
+                    SetHighlightingColor(highlighting, "FieldName", blue2);
+
+                    // xml
+                    SetHighlightingColor(highlighting, "CData", blue);
+                    SetHighlightingColor(highlighting, "DocType", blue);
+                    SetHighlightingColor(highlighting, "XmlDeclaration", green);
+                    SetHighlightingColor(highlighting, "XmlTag", green);
+                    SetHighlightingColor(highlighting, "AttributeName", purple);
+                    SetHighlightingColor(highlighting, "AttributeValue", blue);
+                    SetHighlightingColor(highlighting, "FunctionCall", red);
+
+                    foreach (var color in highlighting.NamedHighlightingColors)
+                    {
+                        color.FontWeight = null;
+                    }
+                    txtEdit.SyntaxHighlighting = null;
+                    txtEdit.SyntaxHighlighting = highlighting;
+                }
                 txtEdit.Tag = lang;
+            }
+            void SetHighlightingColor(IHighlightingDefinition highlighting, string colorName, Color color)
+            {
+                var colorItem = highlighting?.GetNamedColor(colorName);
+                if (colorItem != null)
+                {
+                    colorItem.Foreground = new SimpleHighlightingBrush(color);
+                }
             }
 
             txtEdit.Text = code;
